@@ -16,14 +16,11 @@ class AdminMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if(!empty(Auth::check()))
-        {
-            return $next($request);
+
+        if (Auth::user()->usertype !="admin") {
+            return redirect("admin/login");
         }
-        else
-        {
-            Auth::logout();
-            return redirect('admin');//->route('admin')->with('error', 'You are not authorized to access this page.');
-        }
+
+        return $next($request);
     }
 }

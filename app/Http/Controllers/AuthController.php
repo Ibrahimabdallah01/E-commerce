@@ -10,18 +10,21 @@ class AuthController extends Controller
 {
     public function login_admin()
     {
-        if(!empty(Auth::check()) && Auth::user()->is_admin == 1)
+        if(!empty(Auth::check()) && Auth::user()->usertype == 'admin')
         {
             return view("admin/dashboard");
         }
-        return view('admin.auth.login');
+        else
+        {
+            return view('admin.auth.login');
+        }
     }
     public function auth_login_admin(Request $request){
         $remember = !empty($request->remember) ? true : false;
         if(Auth::attempt(['email'=> $request->email, 'password' => $request->password], $remember))
         {
             // Check if the authenticated user is an admin
-            if(Auth::user()->is_admin == 1) {
+            if(Auth::user()->usertype == 'admin') {
                 return redirect('admin/dashboard')->with('success','Success login');
             } else {
                 // Redirect non-admin users to the homepage

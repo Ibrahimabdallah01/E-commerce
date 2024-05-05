@@ -44,4 +44,29 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    static public function getSingle($id)
+    {
+        return user::find($id);
+    }
+
+    public function getAdmin()
+    {
+        return $this->select('users.*')
+                ->where('status', '=', 0)
+                ->where('usertype', '=', 'admin')
+                ->where('is_deleted', '=', 0)
+                ->orderBy('id', 'desc')
+                ->get();
+    }
+
+    // public function getActiveUsers()
+    // {
+    //     return $this->where('status', 1)->get();
+    // }
+
+    // public function getInactiveUsers()
+    // {
+    //     return $this->where('status', 0)->get();
+    // }
 }
